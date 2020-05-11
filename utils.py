@@ -258,6 +258,15 @@ def array_image_save(array, image_path):
   image.save(image_path)
   print("Saved image: {}".format(image_path))
 
+def gradient_sensitive_loss(img1, img2):
+    dY = tf.image.sobel_edges(img1) / 4.
+    dX = tf.image.sobel_edges(img2) / 4.
+    M = tf.sqrt(tf.square(dY[:,:,:,:,0]) + tf.square(dY[:,:,:,:,1]))
+    #dY = tf.image.sobel_edges(img1 * M)
+    #dX = tf.image.sobel_edges(img2 * M)
+    return tf.losses.absolute_difference(dY, dX) \
+         + tf.losses.absolute_difference((1.0 - M) * img1, (1.0 - M) * img2, weights=2.0)
+
 def _tf_fspecial_gauss(size, sigma):
     """Function to mimic the 'fspecial' gaussian MATLAB function
     """

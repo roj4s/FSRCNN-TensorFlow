@@ -1,5 +1,5 @@
 import tensorflow as tf
-from utils import tf_ssim
+from utils import gradient_sensitive_loss, tf_ms_ssim
 
 class Model(object):
 
@@ -52,8 +52,4 @@ class Model(object):
     return tf.nn.relu(_x) - alphas * tf.nn.relu(-_x)
 
   def loss(self, Y, X):
-    dY = tf.image.sobel_edges(Y)
-    dX = tf.image.sobel_edges(X)
-    M = tf.sqrt(tf.square(dY[:,:,:,:,0]) + tf.square(dY[:,:,:,:,1]))
-    return tf.losses.absolute_difference(dY, dX) \
-         + tf.losses.absolute_difference((1.0 - M) * Y, (1.0 - M) * X, weights=2.0)
+    return gradient_sensitive_loss(Y, X)
