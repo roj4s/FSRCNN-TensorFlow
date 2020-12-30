@@ -1,4 +1,5 @@
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+
 from utils import gradient_sensitive_loss, tf_ms_ssim
 
 class Model(object):

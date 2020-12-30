@@ -1,7 +1,8 @@
 from model import Model
 
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 import pprint
 import os
